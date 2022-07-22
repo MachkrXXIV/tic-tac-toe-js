@@ -3,6 +3,7 @@ const gameBoard = (() => {
 
   const getBoardSpot = (index) => {
     _board[index - 1];
+    console.log(this);
   };
 
   const setBoardSpot = (index, player) => {
@@ -11,6 +12,12 @@ const gameBoard = (() => {
 
   const clear = () => {
     _board = [];
+  };
+
+  return {
+    getBoardSpot,
+    setBoardSpot,
+    clear,
   };
 })();
 
