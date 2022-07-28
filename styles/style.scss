@@ -11,26 +11,42 @@
 body {
   height: 100vh;
   display: flex;
-  flex-flow: column;
   flex: 1;
   justify-content: center;
   align-items: center;
 
-  .board {
-    height: fit-content;
-    width: fit-content;
-
-    display: grid;
+  .container {
+    display: flex;
     justify-items: center;
-    align-items: center;
-    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+    gap: 2rem;
 
-    .board-cell {
-      height: 10rem;
-      width: 10rem;
-      font-size: 4rem;
-      padding: 2rem;
-      border: 2px solid blue;
+    .settings {
+      padding-top: 2rem;
+      text-align: center;
+    }
+
+    .game {
+      display: flex;
+      flex-flow: column;
+      align-items: center;
+
+      .board {
+        height: fit-content;
+        width: fit-content;
+
+        display: grid;
+        justify-items: center;
+        align-items: center;
+        grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+
+        .board-cell {
+          height: 10rem;
+          width: 10rem;
+          font-size: 4rem;
+          padding: 2rem;
+          border: 2px solid blue;
+        }
+      }
     }
   }
 }

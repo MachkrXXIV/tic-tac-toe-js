@@ -1,13 +1,13 @@
 const gameBoard = (() => {
+  // manipulate board
   let _board = new Array(9);
 
   const getBoardSpot = (index) => {
-    _board[index - 1];
-    console.log(this);
+    _board[index];
   };
 
-  const setBoardSpot = (index, player) => {
-    _board[index - 1];
+  const setBoardSpot = (index, sign) => {
+    _board[index] = sign;
   };
 
   const clear = () => {
@@ -21,9 +21,15 @@ const gameBoard = (() => {
   };
 })();
 
-const playerFactory = (marker) => {
-  let _marker = marker;
-  const getMarker = () => _marker;
-  const markBoard = 0;
-  return { marker, markBoard };
+const displayController = (() => {
+  // affects what is on screen
+  return;
+})();
+
+const playerFactory = (sign) => {
+  let _sign = sign;
+  const getSign = () => _sign;
+  return { sign, getSign };
 };
+
+// use contains for fa-x or fa-o
