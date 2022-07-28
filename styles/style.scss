@@ -32,6 +32,12 @@ body {
       align-items: center;
       gap: 1rem;
 
+      .score {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+      }
+
       .board {
         height: fit-content;
         width: fit-content;

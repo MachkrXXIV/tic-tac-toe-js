@@ -53,6 +53,16 @@ body .container .game {
   gap: 1rem;
 }
 
+body .container .game .score {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
 body .container .game .board {
   height: -webkit-fit-content;
   height: -moz-fit-content;

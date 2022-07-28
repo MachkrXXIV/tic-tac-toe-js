@@ -11,7 +11,9 @@ const gameBoard = (() => {
   };
 
   const clear = () => {
-    _board = [];
+    for (let i = 0; i < _board.length; i++) {
+      board[i] = "";
+    }
   };
 
   return {
@@ -24,10 +26,10 @@ const gameBoard = (() => {
 const displayController = (() => {
   // affects what is on screen html
   const boardCells = document.querySelectorAll(".board-cell");
-  const restartBtn = document.querySelector;
+  const restartBtn = document.querySelector(".reset");
   boardCells.forEach((cell) => {
     cell.addEventListener("click", (e) => {
-      e;
+      e.target.dataset.index;
     });
   });
   return;
@@ -43,5 +45,6 @@ const playerFactory = (sign) => {
 const gameController = () => {
   const playerX = playerFactory("X");
   const playerO = playerFactory("O");
+  let isPlaying = false;
 };
 // use contains for fa-x or fa-o
