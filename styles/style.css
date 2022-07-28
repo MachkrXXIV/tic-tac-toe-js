@@ -23,6 +23,7 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  overflow-y: hidden;
 }
 
 body .container {
@@ -49,6 +50,7 @@ body .container .game {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  gap: 1rem;
 }
 
 body .container .game .board {
@@ -75,6 +77,10 @@ body .container .game .board .board-cell {
   font-size: 4rem;
   padding: 2rem;
   border: 2px solid blue;
+}
+
+body .container .game .reset {
+  font-size: 2rem;
 }
 
 .hidden {
