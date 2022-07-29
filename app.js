@@ -32,35 +32,55 @@ const displayController = (() => {
   const turnIndicator = document.querySelector(".turn-header");
   boardCells.forEach((cell) => {
     cell.addEventListener("click", (e) => {
-      gameController.e.target.dataset.index;
+      if (
+        e.target.classList.contains("fa-x") ||
+        e.target.classList.contains("fa-o")
+      )
+        return;
+      markBoard(cell, gameController.getCurrentTurn());
+      gameController.makeMove(parseInt(e.target.dataset.index));
     });
   });
+
+  const markBoard = (cell, sign) => {
+    if (sign === "X") {
+      cell.textContent = "X";
+    } else {
+      cell.textContent = "O";
+    }
+  };
+
+  return { markBoard };
 })();
 
 const playerFactory = (sign) => {
   // only job is to create players
   let _sign = sign;
   const getSign = () => _sign;
-  return { sign, getSign };
+  return { getSign };
 };
 
-const gameController = () => {
+const gameController = (() => {
   const player1 = playerFactory("X");
   const player2 = playerFactory("O");
   let gameOver = false;
   let roundNum = 1;
-  let currentTurnSign = "X";
 
   const makeMove = (cellIndex) => {
-    gameBoard.setCell(cellIndex, currentTurnSign);
+    gameBoard.setCell(cellIndex, getCurrentTurn());
+    console.log(getCurrentTurn());
     if (checkWin(cellIndex)) {
       return;
     }
-    if (round === 9) {
+    if (roundNum === 9) {
       return;
     }
-    round++;
+    roundNum++;
     return;
+  };
+
+  const getCurrentTurn = () => {
+    return roundNum % 2 === 1 ? player1.getSign() : player2.getSign();
   };
 
   const checkWin = (cellIndex) => {
@@ -79,9 +99,12 @@ const gameController = () => {
     return winConditions
       .filter((combination) => combination.includes(cellIndex))
       .some((possibleCombination) =>
-        possibleCombination.every((index) => gameBoard.getCell(index) === turn)
+        possibleCombination.every(
+          (index) => gameBoard.getCell(index) === getCurrentTurn()
+        )
       );
   };
-  return { makeMove, checkWin };
-};
+
+  return { makeMove, getCurrentTurn };
+})();
 // use contains for fa-x or fa-o
