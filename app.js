@@ -30,6 +30,8 @@ const displayController = (() => {
   const p1Score = document.querySelector(".p1-score");
   const p2Score = document.querySelector(".p2-score");
   const turnIndicator = document.querySelector(".turn-header");
+  const newGame = document.querySelector(".newGame");
+  const newRound = document.querySelector(".playAgain");
 
   boardCells.forEach((cell) => {
     cell.addEventListener("click", (e) => {
@@ -50,7 +52,14 @@ const displayController = (() => {
     }
   };
 
-  return { updateBoard };
+  const gameEndMessage = (result) => {
+    if (result === "Draw") {
+      return;
+    } else {
+    }
+  };
+
+  return { gameEndMessage };
 })();
 
 const playerFactory = (sign) => {
@@ -68,7 +77,6 @@ const gameController = (() => {
 
   const makeMove = (cellIndex) => {
     gameBoard.setCell(cellIndex, getCurrentTurn());
-    console.log(getCurrentTurn());
     if (checkWin(cellIndex)) {
       return;
     }
