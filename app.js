@@ -30,6 +30,8 @@ const displayController = (() => {
   const p1Score = document.querySelector(".p1-score");
   const p2Score = document.querySelector(".p2-score");
   const turnIndicator = document.querySelector(".turn-header");
+  const popup = document.querySelector(".popup");
+  const winMessage = document.querySelector(".message");
   const newGame = document.querySelector(".newGame");
   const newRound = document.querySelector(".playAgain");
 
@@ -52,21 +54,31 @@ const displayController = (() => {
     }
   };
 
+  const currentTurnIndicator = (player) => {
+    return;
+  };
+
   const gameEndMessage = (result) => {
+    popup.classList.toggle("hidden");
     if (result === "Draw") {
-      return;
+      winMessage.textContent = "It's a draw!";
     } else {
+      winMessage.textContent =
+        result === "X" ? "Player 1 Wins!" : "Player 2 Wins!";
     }
   };
 
-  return { gameEndMessage };
+  return { gameEndMessage, currentTurnIndicator };
 })();
 
 const playerFactory = (sign) => {
   // only job is to create players
   let _sign = sign;
+  let _score = 0;
   const getSign = () => _sign;
-  return { getSign };
+  const getScore = () => _score;
+  const increaseScore = () => _score++;
+  return { getSign, getScore, increaseScore };
 };
 
 const gameController = (() => {

@@ -147,6 +147,6 @@ body .popup .playAgain {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 /*# sourceMappingURL=style.css.map */
