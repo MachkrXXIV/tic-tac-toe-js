@@ -12,7 +12,7 @@ const gameBoard = (() => {
 
   const clear = () => {
     for (let i = 0; i < _board.length; i++) {
-      board[i] = undefined;
+      _board[i] = "";
     }
   };
 
@@ -30,27 +30,27 @@ const displayController = (() => {
   const p1Score = document.querySelector(".p1-score");
   const p2Score = document.querySelector(".p2-score");
   const turnIndicator = document.querySelector(".turn-header");
+
   boardCells.forEach((cell) => {
     cell.addEventListener("click", (e) => {
-      if (
-        e.target.classList.contains("fa-x") ||
-        e.target.classList.contains("fa-o")
-      )
-        return;
-      markBoard(cell, gameController.getCurrentTurn());
+      if (e.target.textContent !== "") return;
       gameController.makeMove(parseInt(e.target.dataset.index));
+      updateBoard();
     });
   });
 
-  const markBoard = (cell, sign) => {
-    if (sign === "X") {
-      cell.textContent = "X";
-    } else {
-      cell.textContent = "O";
+  restartBtn.addEventListener("click", () => {
+    gameBoard.clear();
+    updateBoard();
+  });
+
+  const updateBoard = () => {
+    for (let i = 0; i < boardCells.length; i++) {
+      boardCells[i].textContent = gameBoard.getCell(i);
     }
   };
 
-  return { markBoard };
+  return { updateBoard };
 })();
 
 const playerFactory = (sign) => {
@@ -105,6 +105,11 @@ const gameController = (() => {
       );
   };
 
-  return { makeMove, getCurrentTurn };
+  const resetGame = () => {
+    roundNum = 1;
+    gameOver = false;
+  };
+
+  return { makeMove, getCurrentTurn, resetGame };
 })();
 // use contains for fa-x or fa-o
