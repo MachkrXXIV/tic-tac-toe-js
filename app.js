@@ -49,6 +49,7 @@ const displayController = (() => {
     gameController.resetRound();
     gameController.resetScores();
     togglePopup();
+    removeHighlight();
     updateBoard();
   });
 
@@ -56,6 +57,7 @@ const displayController = (() => {
     gameBoard.clear();
     gameController.resetRound();
     togglePopup();
+    removeHighlight();
     updateBoard();
   });
 
@@ -86,10 +88,13 @@ const displayController = (() => {
     p2Score.textContent = `Player 2's Score: ${p2}`;
   };
 
-  const gameEndMessage = (result) => {
+  const gameEndMessage = (result, cellIndex = null) => {
     setTimeout(() => {
-      togglePopup();
-    }, 1500);
+      highlightWinningCells(gameController.getWinningCombo(cellIndex));
+      setTimeout(() => {
+        togglePopup();
+      }, 1000);
+    }, 500);
     if (result === "Draw") {
       winMessage.textContent = "It's a draw!";
     } else {
@@ -104,8 +109,18 @@ const displayController = (() => {
   };
 
   const highlightWinningCells = (combination) => {
-    
-  }
+    for (let i = 0; i < boardCells.length; i++) {
+      if (combination.includes(parseInt(boardCells[i].dataset.index))) {
+        boardCells[i].style.backgroundColor = "aquamarine";
+      }
+    }
+  };
+
+  const removeHighlight = () => {
+    for (cell of boardCells) {
+      cell.style.backgroundColor = "inherit";
+    }
+  };
 
   return { gameEndMessage, currentTurnIndicator, scoreBoard };
 })();
@@ -135,7 +150,7 @@ const gameController = (() => {
       } else {
         player2.increaseScore();
       }
-      displayController.gameEndMessage(getCurrentTurn());
+      displayController.gameEndMessage(getCurrentTurn(), cellIndex);
       displayController.scoreBoard(player1.getScore(), player2.getScore());
       gameOver = true;
       return;
@@ -174,7 +189,7 @@ const gameController = (() => {
       );
   };
 
-  const getWinningCombo = ()=> {
+  const getWinningCombo = (cellIndex) => {
     const winConditions = [
       [0, 1, 2],
       [3, 4, 5],
@@ -186,13 +201,21 @@ const gameController = (() => {
       [2, 4, 6],
     ];
 
-    const possibleCombos = winConditions.filter((combination) => combination.includes(cellIndex))
-    for (let i = 0; i < possibleCombos.length) {
-      if (possibleCombos[i].every((cell) => gameBoard.getCell(cell) === getCurrentTurn())) {
+    const possibleCombos = winConditions.filter((combination) =>
+      combination.includes(cellIndex)
+    );
+
+    for (let i = 0; i < possibleCombos.length; i++) {
+      if (
+        possibleCombos[i].every(
+          (cell) => gameBoard.getCell(cell) === getCurrentTurn()
+        )
+      ) {
+        console.log(possibleCombos[i]);
         return possibleCombos[i];
       }
     }
-  }
+  };
 
   const resetRound = () => {
     roundNum = 1;
