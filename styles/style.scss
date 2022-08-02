@@ -33,9 +33,22 @@ body {
       gap: 1rem;
 
       .score {
-        width: 100%;
+        width: clamp(100%, 75vw, 90vw);
+        position: relative;
+        bottom: 5rem;
         display: flex;
         justify-content: space-between;
+        font-size: 2rem;
+
+        & > * {
+          padding: 1rem 2rem;
+        }
+      }
+
+      .turn-header {
+        position: relative;
+        bottom: 2rem;
+        font-size: 2.5rem;
       }
 
       .board {
@@ -63,8 +76,8 @@ body {
   }
 
   .popup {
-    height: Min(354px, 50vh);
-    width: Min(460px, 40vw);
+    height: Max(354px, 50vh);
+    width: Max(356px, 40vw);
     padding: 2rem;
     position: fixed;
     display: grid;
@@ -107,3 +120,14 @@ body {
 .hidden {
   display: none !important;
 }
+
+.blur {
+  filter: blur(4px);
+}
+
+.spotlight {
+  border-radius: 500px;
+  background-color: aquamarine;
+}
+
+// @keyframes

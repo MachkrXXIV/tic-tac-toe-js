@@ -54,13 +54,26 @@ body .container .game {
 }
 
 body .container .game .score {
-  width: 100%;
+  width: clamp(100%, 75vw, 90vw);
+  position: relative;
+  bottom: 5rem;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  font-size: 2rem;
+}
+
+body .container .game .score > * {
+  padding: 1rem 2rem;
+}
+
+body .container .game .turn-header {
+  position: relative;
+  bottom: 2rem;
+  font-size: 2.5rem;
 }
 
 body .container .game .board {
@@ -94,8 +107,8 @@ body .container .game .reset {
 }
 
 body .popup {
-  height: Min(354px, 50vh);
-  width: Min(460px, 40vw);
+  height: Max(354px, 50vh);
+  width: Max(356px, 40vw);
   padding: 2rem;
   position: fixed;
   display: -ms-grid;
@@ -148,5 +161,15 @@ body .popup .playAgain {
 
 .hidden {
   display: none !important;
+}
+
+.blur {
+  -webkit-filter: blur(4px);
+          filter: blur(4px);
+}
+
+.spotlight {
+  border-radius: 500px;
+  background-color: aquamarine;
 }
 /*# sourceMappingURL=style.css.map */

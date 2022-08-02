@@ -25,6 +25,7 @@ const gameBoard = (() => {
 
 const displayController = (() => {
   // affects what is on screen html
+  const screen = document.querySelector(".container");
   const boardCells = document.querySelectorAll(".board-cell");
   const p1Score = document.querySelector(".p1-score");
   const p2Score = document.querySelector(".p2-score");
@@ -34,6 +35,7 @@ const displayController = (() => {
   const newGame = document.querySelector(".reset");
   const newRound = document.querySelector(".playAgain");
 
+  p1Score.classList.toggle("spotlight");
   boardCells.forEach((cell) => {
     cell.addEventListener("click", (e) => {
       if (e.target.textContent !== "") return;
@@ -57,6 +59,10 @@ const displayController = (() => {
     updateBoard();
   });
 
+  const blurScreen = () => {
+    screen.classList.toggle("blur");
+  };
+
   const updateBoard = () => {
     for (let i = 0; i < boardCells.length; i++) {
       boardCells[i].textContent = gameBoard.getCell(i);
@@ -66,6 +72,13 @@ const displayController = (() => {
   const currentTurnIndicator = (player) => {
     turnIndicator.textContent =
       player === "X" ? "Player 1's turn" : "Player 2's turn";
+    p1Score.classList.remove("spotlight");
+    p2Score.classList.remove("spotlight");
+    if (player === "X") {
+      p1Score.classList.toggle("spotlight");
+    } else {
+      p2Score.classList.toggle("spotlight");
+    }
   };
 
   const scoreBoard = (p1, p2) => {
@@ -76,7 +89,7 @@ const displayController = (() => {
   const gameEndMessage = (result) => {
     setTimeout(() => {
       togglePopup();
-    }, 1000);
+    }, 1500);
     if (result === "Draw") {
       winMessage.textContent = "It's a draw!";
     } else {
@@ -87,7 +100,12 @@ const displayController = (() => {
 
   const togglePopup = () => {
     popup.classList.toggle("hidden");
+    blurScreen();
   };
+
+  const highlightWinningCells = (combination) => {
+    
+  }
 
   return { gameEndMessage, currentTurnIndicator, scoreBoard };
 })();
@@ -156,9 +174,30 @@ const gameController = (() => {
       );
   };
 
+  const getWinningCombo = ()=> {
+    const winConditions = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+
+    const possibleCombos = winConditions.filter((combination) => combination.includes(cellIndex))
+    for (let i = 0; i < possibleCombos.length) {
+      if (possibleCombos[i].every((cell) => gameBoard.getCell(cell) === getCurrentTurn())) {
+        return possibleCombos[i];
+      }
+    }
+  }
+
   const resetRound = () => {
     roundNum = 1;
     gameOver = false;
+    displayController.currentTurnIndicator(player1.getSign());
   };
 
   const resetScores = () => {
@@ -167,6 +206,6 @@ const gameController = (() => {
     displayController.scoreBoard(player1.getScore(), player2.getScore());
   };
 
-  return { makeMove, getCurrentTurn, resetRound, resetScores };
+  return { makeMove, getCurrentTurn, resetRound, resetScores, getWinningCombo };
 })();
 // use contains for fa-x or fa-o
