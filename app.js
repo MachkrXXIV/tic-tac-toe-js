@@ -31,7 +31,7 @@ const displayController = (() => {
   const p2Score = document.querySelector(".p2-score");
   const turnIndicator = document.querySelector(".turn-header");
   const popup = document.querySelector(".popup");
-  const winMessage = document.querySelector(".message");
+  const winMessage = document.querySelector(".popupMessage");
   const newGame = document.querySelector(".newGame");
   const newRound = document.querySelector(".playAgain");
 
@@ -55,11 +55,19 @@ const displayController = (() => {
   };
 
   const currentTurnIndicator = (player) => {
-    return;
+    turnIndicator.textContent =
+      player === "X" ? "Player 1's turn" : "Player 2's turn";
+  };
+
+  const scoreBoard = (p1, p2) => {
+    p1Score.textContent = `Player 1's Score: ${p1}`;
+    p2Score.textContent = `Player 2's Score: ${p2}`;
   };
 
   const gameEndMessage = (result) => {
-    popup.classList.toggle("hidden");
+    setTimeout(() => {
+      popup.classList.toggle("hidden");
+    }, 1000);
     if (result === "Draw") {
       winMessage.textContent = "It's a draw!";
     } else {
@@ -90,13 +98,16 @@ const gameController = (() => {
   const makeMove = (cellIndex) => {
     gameBoard.setCell(cellIndex, getCurrentTurn());
     if (checkWin(cellIndex)) {
+      displayController.gameEndMessage(getCurrentTurn());
+      gameOver = true;
       return;
     }
     if (roundNum === 9) {
+      displayController.gameEndMessage("Draw");
       return;
     }
     roundNum++;
-    return;
+    displayController.currentTurnIndicator(getCurrentTurn());
   };
 
   const getCurrentTurn = () => {
