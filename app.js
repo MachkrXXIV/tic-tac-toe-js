@@ -26,13 +26,12 @@ const gameBoard = (() => {
 const displayController = (() => {
   // affects what is on screen html
   const boardCells = document.querySelectorAll(".board-cell");
-  const restartBtn = document.querySelector(".reset");
   const p1Score = document.querySelector(".p1-score");
   const p2Score = document.querySelector(".p2-score");
   const turnIndicator = document.querySelector(".turn-header");
   const popup = document.querySelector(".popup");
   const winMessage = document.querySelector(".popupMessage");
-  const newGame = document.querySelector(".newGame");
+  const newGame = document.querySelector(".reset");
   const newRound = document.querySelector(".playAgain");
 
   boardCells.forEach((cell) => {
@@ -43,8 +42,18 @@ const displayController = (() => {
     });
   });
 
-  restartBtn.addEventListener("click", () => {
+  newGame.addEventListener("click", () => {
     gameBoard.clear();
+    gameController.resetRound();
+    gameController.resetScores();
+    togglePopup();
+    updateBoard();
+  });
+
+  newRound.addEventListener("click", () => {
+    gameBoard.clear();
+    gameController.resetRound();
+    togglePopup();
     updateBoard();
   });
 
@@ -66,7 +75,7 @@ const displayController = (() => {
 
   const gameEndMessage = (result) => {
     setTimeout(() => {
-      popup.classList.toggle("hidden");
+      togglePopup();
     }, 1000);
     if (result === "Draw") {
       winMessage.textContent = "It's a draw!";
@@ -76,7 +85,11 @@ const displayController = (() => {
     }
   };
 
-  return { gameEndMessage, currentTurnIndicator };
+  const togglePopup = () => {
+    popup.classList.toggle("hidden");
+  };
+
+  return { gameEndMessage, currentTurnIndicator, scoreBoard };
 })();
 
 const playerFactory = (sign) => {
@@ -86,7 +99,8 @@ const playerFactory = (sign) => {
   const getSign = () => _sign;
   const getScore = () => _score;
   const increaseScore = () => _score++;
-  return { getSign, getScore, increaseScore };
+  const resetScore = () => (_score = 0);
+  return { getSign, getScore, increaseScore, resetScore };
 };
 
 const gameController = (() => {
@@ -98,7 +112,13 @@ const gameController = (() => {
   const makeMove = (cellIndex) => {
     gameBoard.setCell(cellIndex, getCurrentTurn());
     if (checkWin(cellIndex)) {
+      if (getCurrentTurn() === "X") {
+        player1.increaseScore();
+      } else {
+        player2.increaseScore();
+      }
       displayController.gameEndMessage(getCurrentTurn());
+      displayController.scoreBoard(player1.getScore(), player2.getScore());
       gameOver = true;
       return;
     }
@@ -136,11 +156,17 @@ const gameController = (() => {
       );
   };
 
-  const resetGame = () => {
+  const resetRound = () => {
     roundNum = 1;
     gameOver = false;
   };
 
-  return { makeMove, getCurrentTurn, resetGame };
+  const resetScores = () => {
+    player1.resetScore();
+    player2.resetScore();
+    displayController.scoreBoard(player1.getScore(), player2.getScore());
+  };
+
+  return { makeMove, getCurrentTurn, resetRound, resetScores };
 })();
 // use contains for fa-x or fa-o
